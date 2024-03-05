@@ -4,7 +4,7 @@ title: Process Management
 
 # Process Management
 
-In this chapter you will learn how to work with processes.
+In this chapter, you will learn how to work with processes.
 
 ****
 
@@ -25,9 +25,9 @@ In this chapter you will learn how to work with processes.
 
 ## Generalities
 
-An operating system consists of processes. These processes are executed in a specific order and are related to each other. There are two categories of processes, those focused on the user environment and those focused on the hardware environment.
+An operating system consists of processes. These processes are executed in a specific order and are related. There are two categories of processes, those focused on the user environment and those focused on the hardware environment.
 
-When a program runs, the system will create a process by placing the program data and code in memory and creating a **runtime stack**. A process is therefore an instance of a program with an associated processor environment (ordinal counter, registers, etc...) and memory environment.
+When a program runs, the system will create a process by placing the program data and code in memory and creating a **runtime stack**. A process is an instance of a program with an associated processor environment (ordinal counter, registers, etc...) and memory environment.
 
 Each process has:
 
@@ -36,10 +36,10 @@ Each process has:
 
 By successive filiations, the `init` process is the father of all processes.
 
-* A process is always created by a parent process
+* A parent process always creates a process
 * A parent process can have multiple child processes
 
-There is a parent/child relationship between processes. A child process is the result of the parent process calling the _fork()_ primitive and duplicating its own code to create a child. The _PID_ of the child is returned to the parent process so that it can talk to it. Each child has its parent's identifier, the _PPID_.
+There is a parent/child relationship between processes. A child process results from the parent calling the _fork()_ primitive and duplicating its code to create a child. The _PID_ of the child is returned to the parent process so that it can talk to it. Each child has its parent's identifier, the _PPID_.
 
 The _PID_ number represents the process at the time of execution. When the process finishes, the number is available again for another process. Running the same command several times will produce a different _PID_ each time.
 
@@ -47,7 +47,7 @@ The _PID_ number represents the process at the time of execution. When the proce
 
 !!! Note
 
-    Processes are not to be confused with _threads_. Each process has its own memory context (resources and address space), while _threads_ from the same process share this same context.
+    Processes are not to be confused with _threads_. Each process has its memory context (resources and address space), while _threads_ from the same process share this context.
 
 ## Viewing processes
 
@@ -77,12 +77,12 @@ Some additional options:
 | `-H`                  | Displays the information in a tree structure.     |
 | `-I`                  | Displays additional information.                  |
 | `--sort COL`          | Sort the result according to a column.            |
-| `--headers`           | Displays the header on each page of the terminal. |
+| `--headers`           | Displays the header on each terminal page. |
 | `--format "%a %b %c"` | Customize the output display format.              |
 
 Without an option specified, the `ps` command only displays processes running from the current terminal.
 
-The result is displayed in columns:
+The result is displayed in the following columns:
 
 ```
 # ps -ef
@@ -101,7 +101,7 @@ root 1   0    0 Jan01  ?   00:00/03  /sbin/init
 | `TIME`   | Processing duration.        |
 | `CMD`    | Command executed.           |
 
-The behaviour of the control can be fully customized:
+The behavior of the control can be fully customized:
 
 ```
 # ps -e --format "%P %p %c %n" --sort ppid --headers
@@ -126,7 +126,7 @@ The user process:
 The system process (_daemon_):
 
 * is started by the system
-* is not associated with any terminal, and is owned by a system user (often `root`)
+* is not associated with any terminal and is owned by a system user (often `root`)
 * is loaded at boot time, resides in memory, and is waiting for a call
 * is usually identified by the letter `d` associated with the process name
 
@@ -134,9 +134,9 @@ System processes are therefore called daemons (_**D**isk **A**nd **E**xecution *
 
 ## Permissions and rights
 
-When a command is executed, the user's credentials are passed to the created process.
+The user's credentials are passed to the created process when a command is executed.
 
-By default, the actual `UID` and `GID` (of the process) are therefore identical to the **actual** `UID` and `GID` (the `UID` and `GID` of the user who executed the command).
+By default, the process's actual `UID` and `GID` (of the process) are identical to the **actual** `UID` and `GID` (the `UID` and `GID` of the user who executed the command).
 
 When a `SUID` (and/or `SGID`) is set on a command, the actual `UID` (and/or `GID`) becomes that of the owner (and/or owner group) of the command and no longer that of the user or user group that issued the command. Effective and real **UIDs** are therefore **different**.
 
@@ -146,7 +146,7 @@ Each time a file is accessed, the system checks the rights of the process accord
 
 A process cannot be run indefinitely, as this would be to the detriment of other running processes and would prevent multitasking.
 
-The total processing time available is therefore divided into small ranges, and each process (with a priority) accesses the processor in a sequenced manner. The process will take several states during its life among the states:
+Therefore, the total processing time available is divided into small ranges, and each process (with a priority) accesses the processor sequentially. The process will take several states during its life among the states:
 
 * ready: waiting for the availability of the process
 * in execution: accesses the processor
@@ -161,13 +161,13 @@ The end-of-process sequencing is as follows:
 2. Release of the used memory
 3. Sending a signal to the parent and child processes
 
-When a parent process dies, its children are said to be orphans. They are then adopted by the `init` process which will destroy them.
+When a parent process dies, their children are said to be orphans. They are then adopted by the `init` process, which will destroy them.
 
 ### The priority of a process
 
-The processor works in time sharing with each process occupying a quantity of processor time.
+The processor works in time sharing, with each process occupying a quantity of processor time.
 
-The processes are classified by priority whose value varies from **-20** (the highest priority) to **+19** (the lowest priority).
+The processes are classified by priority, whose value varies from **-20** (the highest priority) to **+19** (the lowest priority).
 
 The default priority of a process is **0**.
 
@@ -236,7 +236,7 @@ $ nohup myprogram.sh 0</dev/null &
 
 !!! Note
 
-    `nohup` handles standard output and error, but not standard input, hence the redirection of this input to `/dev/null`.
+    `nohup` handles standard output and error but not standard input, hence the redirection of this input to `/dev/null`.
 
 ### [CTRL] + [Z]
 
@@ -318,7 +318,7 @@ Unlike `root`, a standard user can only reduce the priority of a process. Only v
 
 !!! Tip
 
-    This last limitation can be lifted on a per-user or per-group basis by modifying the `/etc/security/limits.conf` file.
+    This last limitation can be lifted per-user or per-group by modifying the `/etc/security/limits.conf` file.
 
 The `renice` command allows you to change the priority of a running process.
 
@@ -337,7 +337,7 @@ $ renice +15 -p 1664
 | `-p`   | `PID` of the process.             |
 | `-u`   | `UID` of the process owner.       |
 
-The `renice` command acts on processes already running. It is therefore possible to change the priority of a specific process, but also of several processes belonging to a user or a group.
+The `renice` command acts on processes already running. It is therefore possible to change the priority of a specific process and several processes belonging to a user or a group.
 
 !!! Tip
 
@@ -368,29 +368,120 @@ PID  USER PR NI ... %CPU %MEM  TIME+    COMMAND
 | `TIME+`   | Processor usage time. |
 | `COMMAND` | Command executed.     |
 
-The `top` command allows control of the processes in real time and in interactive mode.
+The `top` command allows control of the processes in real-time and in interactive mode.
 
 ### `pgrep` and `pkill` commands
 
 The `pgrep` command searches the running processes for a process name and displays the _PID_ matching the selection criteria on the standard output.
 
-The `pkill` command will send the specified signal (by default _SIGTERM_) to each process.
+The `pkill` command will send each process the specified signal (by default _SIGTERM_).
 
 ```
 pgrep process
-pkill [-signal] process
+pkill [option] [-signal] process
 ```
 
 Examples:
 
 * Get the process number from `sshd`:
 
-```
-$ pgrep -u root sshd
-```
+  ```
+  $ pgrep -u root sshd
+  ```
 
 * Kill all `tomcat` processes:
 
+  ```
+  $ pkill tomcat
+  ```
+
+!!! note
+
+    Before you kill a process, it's best to know exactly what the process is for, otherwise it can lead to system crashes or other unpredictable problems.
+
+In addition to sending signals to the relevant processes, the `pkill` command can also end the user's connection session according to the terminal number, such as:
+
 ```
-$ pkill tomcat
+$ pkill -t pts/1
 ```
+
+### `killall` command
+
+The function of this command is roughly the same as that of the `pkill` command. The usage is - `killall [option] [ -s SIGNAL | -SIGNAL ] NAME`. The default signal is _SIGTERM_.
+
+| Options | Description |
+| :--- | :--- |
+| `-l` | list all known signal names |
+| `-i` | ask for confirmation before killing |
+| `-I` | case insensitive process name match |
+
+Example:
+
+```
+$ killall tomcat
+```
+
+### `pstree` command
+
+This command displays the progress in a tree style, and its usage is - `pstree [option]`.
+
+| Option | Description |
+| :--- | :--- |
+| `-p` | Displays the PID of the process |
+| `-n` | sort output by PID |
+| `-h` | highlight current process and its ancestors |
+| `-u` | show uid transitions |
+
+```bash
+$ pstree -pnhu
+systemd(1)─┬─systemd-journal(595)
+           ├─systemd-udevd(625)
+           ├─auditd(671)───{auditd}(672)
+           ├─dbus-daemon(714,dbus)
+           ├─NetworkManager(715)─┬─{NetworkManager}(756)
+           │                     └─{NetworkManager}(757)
+           ├─systemd-logind(721)
+           ├─chronyd(737,chrony)
+           ├─sshd(758)───sshd(1398)───sshd(1410)───bash(1411)───pstree(1500)
+           ├─tuned(759)─┬─{tuned}(1376)
+           │            ├─{tuned}(1381)
+           │            ├─{tuned}(1382)
+           │            └─{tuned}(1384)
+           ├─agetty(763)
+           ├─crond(768)
+           ├─polkitd(1375,polkitd)─┬─{polkitd}(1387)
+           │                       ├─{polkitd}(1388)
+           │                       ├─{polkitd}(1389)
+           │                       ├─{polkitd}(1390)
+           │                       └─{polkitd}(1392)
+           └─systemd(1401)───(sd-pam)(1404)
+```
+
+### Orphan process and zombie process
+
+**orphan process**: When a parent process dies, their children are said to be orphans. The init process adopts these special state processes, and status collection is completed until they are destroyed. Conceptually speaking, the orphanage process does not pose any harm.
+
+**zombie process**: After a child process completes its work and is terminated, its parent process needs to call the signal processing function wait() or waitpid() to obtain the termination status of the child process. If the parent process does not do so, although the child process has already exited, it still retains some exit status information in the system process table. Because the parent process cannot obtain the status information of the child process, these processes will continue to occupy resources in the process table. We refer to processes in this state as zombies.
+
+Hazard:
+
+* Occupying system resources and causing a decrease in machine performance.
+* Unable to generate new child processes.
+
+How to check if there are any zombie processes in the current system?
+
+```
+$ ps -lef | awk '{print $2}' | grep Z
+```
+
+These characters may appear in this column:
+
+* **D** - uninterruptible sleep (usually IO)
+* **I** - Idle kernel thread
+* **R** - running or runnable (on run queue)
+* **S** - interruptible sleep (waiting for an event to complete)
+* **T** - stopped by job control signal
+* **t** - stopped by debugger during the tracing
+* **W** - paging (not valid since the 2.6.xx kernel)
+* **X** - dead (should never be seen)
+* **Z** - defunct ("zombie") process, terminated but not reaped by its parent
